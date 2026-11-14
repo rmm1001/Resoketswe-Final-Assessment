@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="Cucumber" time="3.242" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-11-14T20:41:03.990648Z">
-<testcase classname="New User Registration" name="Register a new user selecting the &quot;Do Not Use&quot; group - #1.1" time="2.608">
+<testsuite name="Cucumber" time="3.01" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-11-14T20:45:39.182261900Z">
+<testcase classname="New User Registration" name="Register a new user selecting the &quot;Do Not Use&quot; group - #1.1" time="2.381">
 <system-out><![CDATA[
 Given I am on the home page.................................................passed
 And I click on the registration link........................................passed
@@ -9,7 +9,7 @@ When I submit the registration form.........................................pass
 Then I should see a confirmation message indicating successful registration..passed
 ]]></system-out>
 </testcase>
-<testcase classname="New User Registration" name="Admin assigns administrator role - #1.1" time="0.197">
+<testcase classname="New User Registration" name="Admin assigns administrator role - #1.1" time="0.193">
 <system-out><![CDATA[
 Given an existing admin logs into the application...........................passed
 When the admin navigates to user management.................................passed

@@ -18,38 +18,42 @@ public class Hooks {
     @After
     public void takeScreenshotAfterScenario(Scenario scenario) {
 
+        WebDriver driver = DriverFactory.getDriver();
+
         if (driver != null) {
 
-            byte[] screenshot = ((TakesScreenshot) driver)
-                    .getScreenshotAs(OutputType.BYTES);
+            try {
+                // Capture screenshot
+                byte[] screenshot =
+                        ((TakesScreenshot) driver)
+                                .getScreenshotAs(OutputType.BYTES);
 
-            scenario.attach(
-                    screenshot,
-                    "image/png",
-                    scenario.getName()
-            );
+                // Attach screenshot to Cucumber HTML report
+                scenario.attach(
+                        screenshot,
+                        "image/png",
+                        scenario.getName()
+                );
 
-            Screenshots.captureScreenshot(
-                    driver,
-                    scenario.getName().replaceAll("[^a-zA-Z0-9]", "_")
+                // Save screenshot to screenshots folder
+                Screenshots.captureScreenshot(
+                        driver,
+                        scenario.getName().replaceAll(
+                                "[^a-zA-Z0-9]",
+                                "_"
+                        ) + "_" + System.currentTimeMillis()
+                );
+
+                System.out.println(
+                        "Screenshot captured: " + scenario.getName()
+                );
+
+            } catch (Exception e) {
+                System.out.println(
+                        "Screenshot error: " + e.getMessage()
                 );
             }
         }
 
-    @AfterAll
-    public static void generateAssessmentReport() {
-
-        // Replace these example values with
-        // actual results from your Cucumber JSON report.
-        int totalTests = 7;
-        int passedTests = 7;
-        int failedTests = 0;
-
-        Reports.generateReport(
-                totalTests,
-                passedTests,
-                failedTests
-        );
     }
 }
-
