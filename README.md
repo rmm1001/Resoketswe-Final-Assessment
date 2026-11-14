@@ -23,7 +23,7 @@ Project Structure
 text
 Project/
 ├── pages/
-├── steps/
+├── steps.Steps/
 ├── utils/
 ├── reports/
 ├── screenshots/

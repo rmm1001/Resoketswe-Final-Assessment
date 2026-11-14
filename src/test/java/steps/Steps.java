@@ -1,9 +1,12 @@
+package steps;
+
+import io.cucumber.java.PendingException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-public class steps {
+public class Steps {
     @Given("I am on home page")
     public void i_am_on_home_page() {
     }
@@ -122,5 +125,11 @@ public class steps {
     @And("I should have the {string} role")
     public void iShouldHaveTheRole(String arg0) {
 
+    }
+
+    @And("I should have access to administrator functionality")
+    public void iShouldHaveAccessToAdministratorFunctionality() {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
     }
 }
