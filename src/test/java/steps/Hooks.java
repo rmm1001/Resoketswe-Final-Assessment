@@ -2,6 +2,7 @@ package steps;
 
 import io.cucumber.java.After;
 import io.cucumber.java.AfterAll;
+import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -13,7 +14,15 @@ import utils.Screenshots;
 
 public class Hooks {
 
-    WebDriver driver = DriverFactory.getDriver();
+    @Before
+    public void setUp() {
+        WebDriver driver = DriverFactory.getDriver();
+
+        driver.manage().window().maximize();
+
+        driver.get("https://ndosisimplifiedautomation.vercel.app/#overview");
+
+    }
 
     @After
     public void takeScreenshotAfterScenario(Scenario scenario) {
