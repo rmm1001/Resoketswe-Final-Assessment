@@ -5,8 +5,10 @@ on:
   push:
     branches:
       - '**'
+
   schedule:
     - cron: '0 22 * * *'
+
   workflow_dispatch:
 
 jobs:
@@ -14,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout project
         uses: actions/checkout@v4
 
       - name: Set up Java
@@ -32,11 +34,11 @@ jobs:
         env:
           HEADLESS: 'true'
 
-      - name: Upload reports and screenshots
+      - name: Save test reports and screenshots
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: test-results
+          name: cucumber-reports-and-screenshots
           path: |
             reports/
             screenshots/
