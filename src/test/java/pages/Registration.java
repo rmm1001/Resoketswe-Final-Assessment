@@ -1,4 +1,4 @@
 package pages;
 
-public class RegistrationPage {
+public class Registration {
 }
