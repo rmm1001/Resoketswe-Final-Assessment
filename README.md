@@ -20,13 +20,28 @@ Log in using the new user's credentials.
 Verify successful login.
 Verify that the user has an Admin role.
 Project Structure
-text
-Project/
+YourProject/
+│
 ├── pages/
-├── steps.Steps/
+├── steps/
+│   ├── Hooks.java
+│   └── ReportHooks.java
+│
 ├── utils/
+│   ├── ScreenshotUtil.java
+│   ├── DriverFactory.java
+│   └── ReportUtil.java
+│
 ├── reports/
+│   ├── cucumber-report.html
+│   ├── cucumber-report.json
+│   └── assessment-report.txt
+│
 ├── screenshots/
+│
+├── src/test/resources/features/
+│   └── user_registration.feature
+│
 ├── README.md
 └── pom.xml
 
