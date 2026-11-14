@@ -11,9 +11,6 @@ Feature: New User Registration
       | firstname | lastname | email | password | confirmPassword | group |
       | John | Doe | john.doe@gmail.com | Test@1234 | Test@1234 | Do Not Use |
 
-
-Feature: Admin Approval
-
   Scenario Outline: Admin approves the new user
     Given an existing admin logs into the application
     When the admin navigates to user management

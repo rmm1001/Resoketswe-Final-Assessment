@@ -1,0 +1,31 @@
+USER REGISTRATION ASSESSMENT REPORT
+====================================
+
+Date: 2026-11-14 22:24:11
+
+PROJECT DETAILS
+------------------------------
+Language: Java
+Automation: Selenium WebDriver
+Framework: Cucumber
+Build Tool: Maven
+
+TEST EXECUTION SUMMARY
+------------------------------
+Total Tests: 7
+Passed Tests: 7
+Failed Tests: 0
+
+ASSESSMENT TEST SCENARIOS
+------------------------------
+1. Register a new user
+2. Select group Do Not Use
+3. Approve the new user
+4. Assign Admin role
+5. Login using the new user
+6. Verify successful login
+7. Verify Admin role
+
+CONCLUSION
+------------------------------
+All tests passed successfully.
