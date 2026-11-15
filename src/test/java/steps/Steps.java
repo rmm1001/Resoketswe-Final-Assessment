@@ -5,8 +5,54 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
+
+import static utils.DriverFactory.driver;
 
 public class Steps {
+
+    @Given("I open the application home page")
+    public void openHomePage() {
+        driver.get("https://ndosisimplifiedautomation.vercel.app/#overview");
+    }
+
+    @When("I click on Login")
+    public void clickLogin() {
+
+        WebDriverWait wait = new WebDriverWait(
+                driver, Duration.ofSeconds(15)
+        );
+
+        WebElement loginButton = wait.until(
+                ExpectedConditions.elementToBeClickable(
+                        By.xpath("//*[normalize-space()='Login']")
+                )
+        );
+
+        loginButton.click();
+    }
+
+    @When("I click on Sign up here")
+    public void clickSignUp() {
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+
+        WebElement signUp = wait.until(
+                ExpectedConditions.elementToBeClickable(
+                        By.xpath("//*[contains(translate(normalize-space(.), " +
+                                "'ABCDEFGHIJKLMNOPQRSTUVWXYZ', " +
+                                "'abcdefghijklmnopqrstuvwxyz'), 'sign up')]")
+                )
+        );
+
+        signUp.click();
+    }
+
     @Given("I am on home page")
     public void i_am_on_home_page() {
     }
@@ -19,8 +65,8 @@ public class Steps {
     public void i_enter_username_mashabela96_gmail_com() {
 
     }
-    @Given("I enter password Test@{int}")
-    public void i_enter_password_test(Integer int1) {
+    @Given("I enter password Test@1234")
+    public void i_enter_password_test() {
     }
 
     @When("I click submit button")

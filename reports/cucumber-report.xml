@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="Cucumber" time="8.073" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-11-14T20:51:01.894139800Z">
-<testcase classname="New User Registration" name="Register a new user selecting the &quot;Do Not Use&quot; group - #1.1" time="5.94">
+<testsuite name="Cucumber" time="8.383" tests="2" skipped="0" failures="1" errors="0" timestamp="2026-11-14T21:08:02.011269200Z">
+<testcase classname="New User Registration" name="Register a new user selecting the &quot;Do Not Use&quot; group - #1.1" time="5.684">
+<failure/>
 <system-out><![CDATA[
-Given I am on the home page.................................................passed
-And I click on the registration link........................................passed
-And I fill in the registration form with valid details......................passed
-When I submit the registration form.........................................passed
-Then I should see a confirmation message indicating successful registration..passed
+Given I open the application home page......................................passed
+When I click on Login.......................................................passed
+And I click on Sign up here.................................................passed
+And I enter unique user details.............................................undefined
+And I select the Do Not Use group...........................................skipped
+And I submit the registration form..........................................skipped
+Then my registration should be successful...................................skipped
 ]]></system-out>
 </testcase>
-<testcase classname="New User Registration" name="Admin assigns administrator role - #1.1" time="1.595">
+<testcase classname="New User Registration" name="Admin assigns administrator role - #1.1" time="2.137">
 <system-out><![CDATA[
 Given an existing admin logs into the application...........................passed
 When the admin navigates to user management.................................passed
