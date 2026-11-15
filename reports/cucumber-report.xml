@@ -1,26 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="Cucumber" time="11.36" tests="2" skipped="0" failures="1" errors="0" timestamp="2026-11-15T11:08:39.838629Z">
-<testcase classname="New User Registration" name="Register a new user selecting the &quot;Do Not Use&quot; group - #1.1" time="8.716">
+<testsuite name="Cucumber" time="12.147" tests="1" skipped="0" failures="1" errors="0" timestamp="2026-11-15T13:03:08.991617900Z">
+<testcase classname="User Registration and Admin Approval" name="Register a new user, approve and promote to Admin" time="11.368">
 <failure/>
 <system-out><![CDATA[
-Given I open the application home page......................................passed
-When I click on Login.......................................................passed
-And I click on Sign up here.................................................passed
-And I enter unique user details.............................................undefined
-And I select the Do Not Use group...........................................skipped
-And I submit the registration form..........................................skipped
-Then my registration should be successful...................................skipped
-]]></system-out>
-</testcase>
-<testcase classname="New User Registration" name="Admin assigns administrator role - #1.1" time="2.203">
-<system-out><![CDATA[
-Given an existing admin logs into the application...........................passed
-When the admin navigates to user management.................................passed
-And the admin searches for the newly registered user........................passed
-When the admin updates the newly registered user's role.....................passed
-And the admin assigns the "Admin" role......................................passed
-And the admin saves the user changes........................................passed
-Then the newly registered user should have the "Admin" role.................passed
+Given I am on the registration page.........................................undefined
+When I register a new user selecting the Do Not Use 2026 group..............skipped
+Then the user registration should be submitted..............................skipped
+Given an existing admin logs into the application...........................skipped
+When the admin opens user management........................................skipped
+And the admin approves the new user.........................................skipped
+And the admin promotes the new user to Admin................................skipped
+Given I have logged out of the admin account................................skipped
+When I log in with the newly registered user................................skipped
+Then I should have the "Admin" role.........................................skipped
 ]]></system-out>
 </testcase>
 </testsuite>

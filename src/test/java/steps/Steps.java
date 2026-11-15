@@ -1,387 +1,246 @@
 
 package steps;
 
-import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
-
-import org.openqa.selenium.By;
+import io.cucumber.java.en.*;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
-import java.time.Duration;
+import pages.Registration;
+import pages.Login;
+import pages.Admin;
+import utils.DriverFactory;
+
 import java.util.UUID;
-
-import static org.testng.Assert.assertTrue;
-import static utils.DriverFactory.getDriver;
 
 public class Steps {
 
     private WebDriver driver;
-    private WebDriverWait wait;
 
-    private String registeredEmail;
-    private final String registeredPassword = "Test@1234";
+    private Registration registrationPage;
+    private Login loginPage;
+    private Admin adminPage;
 
-    private final String baseUrl =
-            "https://ndosisimplifiedautomation.vercel.app/#overview";
+    // Newly registered user details
+    private String firstName;
+    private String lastName;
+    private String userEmail;
+    private String userPassword;
 
-    private void initialize() {
-        driver = getDriver();
-        wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+    // Registration confirmation message
+    private String registrationMessage;
+
+    // Administrator credentials
+    private final String adminEmail = System.getenv("ADMIN_EMAIL");
+    private final String adminPassword = System.getenv("ADMIN_PASSWORD");
+
+    // Initialize Page Objects
+    private void initializePages() {
+
+        driver = DriverFactory.getDriver();
+
+        registrationPage = new Registration(driver);
+        loginPage = new Login(driver);
+        adminPage = new Admin(driver);
     }
 
-    private WebElement find(By locator) {
-        return wait.until(
-                ExpectedConditions.visibilityOfElementLocated(locator)
+    // STEP 1: Open registration page
+    @Given("I am on the registration page")
+    public void iAmOnRegistrationPage() {
+
+        initializePages();
+
+        driver.get(
+                "https://ndosisimplifiedautomation.vercel.app/#practice"
         );
     }
 
-    private void click(By locator) {
-        wait.until(
-                ExpectedConditions.elementToBeClickable(locator)
-        ).click();
+    // STEP 2: Register a new user
+    @When("I register a new user selecting the Do Not Use {int} group")
+    public void registerNewUser(Integer year) {
+
+        Assert.assertEquals(
+                year.intValue(),
+                2026,
+                "Unexpected group year."
+        );
+
+        String unique = UUID.randomUUID()
+                .toString()
+                .substring(0, 8);
+
+        firstName = "Test";
+        lastName = "User";
+        userEmail = "testuser" + unique + "@example.com";
+        userPassword = "Test@12345";
+
+        System.out.println("\n========== NEW USER ==========");
+        System.out.println("First name: " + firstName);
+        System.out.println("Last name: " + lastName);
+        System.out.println("Email: " + userEmail);
+        System.out.println("==============================");
+
+        registrationMessage = registrationPage.registerUser(
+                firstName,
+                lastName,
+                userEmail,
+                userPassword
+        );
     }
 
-    private void type(By locator, String value) {
-        WebElement element = find(locator);
-        element.clear();
-        element.sendKeys(value);
-    }
+    // STEP 3: Verify registration
+    @Then("the user registration should be submitted")
+    public void verifyRegistration() {
 
-    // ==========================================
-    // HOME PAGE
-    // ==========================================
+        Assert.assertNotNull(
+                registrationMessage,
+                "Registration confirmation was not received."
+        );
 
-    @Given("I open the application home page")
-    public void openHomePage() {
-        initialize();
-        driver.get(baseUrl);
+        Assert.assertTrue(
+                registrationMessage.contains(
+                        "Registration submitted successfully"
+                ),
+                "Unexpected registration message: " + registrationMessage
+        );
 
-        wait.until(ExpectedConditions.titleContains(
-                "Ndosi Test Automation"
-        ));
-    }
-
-    @Given("I am on home page")
-    public void i_am_on_home_page() {
-        initialize();
-        driver.get(baseUrl);
-    }
-
-    @Given("I am on the home page")
-    public void i_am_on_the_home_page() {
-        initialize();
-        driver.get(baseUrl);
-    }
-
-    // ==========================================
-    // LOGIN NAVIGATION
-    // ==========================================
-
-    @When("I click on Login")
-    public void clickLogin() {
-        initialize();
-
-        click(By.xpath(
-                "//*[@id=\"app-root\"]/nav/div[1]/div[3]/button/span[2]"
-        ));
-    }
-
-    @Given("I click login button")
-    public void i_click_login_button() {
-        clickLogin();
-    }
-
-    @When("I click on Sign up here")
-    public void clickSignUp() {
-        initialize();
-
-        click(By.xpath(
-                "//*[@id=\"signup-toggle\"]"
-        ));
-    }
-
-    @Given("I click on the registration link")
-    public void i_click_on_the_registration_link() {
-        clickSignUp();
-    }
-
-    @Given("I navigate to the registration page")
-    public void i_navigate_to_the_registration_page() {
-        clickSignUp();
-    }
-
-    // ==========================================
-    // REGISTRATION
-    // ==========================================
-
-    @When("I enter unique user details")
-    public void enterUniqueUserDetails() {
-
-        initialize();
-
-        registeredEmail = "testuser"
-                + UUID.randomUUID().toString().substring(0, 8)
-                + "@gmail.com";
+        Assert.assertTrue(
+                registrationMessage.contains(
+                        "pending admin approval"
+                ),
+                "Account was not confirmed as pending admin approval."
+        );
 
         System.out.println(
-                "Generated registration email: " + registeredEmail
-        );
-
-        // TODO:
-        // Add the actual first name, last name, email,
-        // password and confirm password field locators.
-        //
-        // These locators must be confirmed against
-        // the registration page HTML.
-    }
-
-    @Given("I fill in the registration form with valid details")
-    public void i_fill_in_the_registration_form_with_valid_details() {
-        enterUniqueUserDetails();
-    }
-
-    @When("I register a new user with unique details")
-    public void i_register_a_new_user_with_unique_details() {
-        enterUniqueUserDetails();
-    }
-
-    @When("I select the {string} group")
-    public void i_select_the_group(String groupName) {
-
-        initialize();
-
-        // Replace this locator if the group field
-        // uses a custom dropdown rather than a select.
-        WebElement dropdown = find(
-                By.xpath("//*[@id=\"register-group\"]")
-        );
-
-        new Select(dropdown).selectByVisibleText(groupName);
-    }
-
-    @When("I submit the registration form")
-    public void i_submit_the_registration_form() {
-
-        initialize();
-
-        click(By.xpath(
-                "//*[@id=\"register-submit\"]"
-        ));
-    }
-
-    @Then("my registration should be successful")
-    public void my_registration_should_be_successful() {
-
-        initialize();
-
-        // Replace with the application's actual success message.
-        WebElement confirmation = find(
-                By.xpath(
-                        "//*[@id=\"register-group\"]"
-                )
-        );
-
-        assertTrue(
-                confirmation.isDisplayed(),
-                "Registration confirmation was not displayed"
+                "Registration successfully verified."
         );
     }
 
-    @Then("the user registration should be successful")
-    public void the_user_registration_should_be_successful() {
-        my_registration_should_be_successful();
-    }
-
-    @Then("I should see a confirmation message indicating successful registration")
-    public void i_should_see_a_confirmation_message_indicating_successful_registration() {
-        my_registration_should_be_successful();
-    }
-
-    // ==========================================
-    // LOGIN
-    // ==========================================
-
-    @Given("I enter username mashabela96@gmail.com")
-    public void i_enter_username_mashabela96_gmail_com() {
-
-        initialize();
-
-        type(
-                By.xpath("//*[@id=\"login-email\"]"),
-                "mashabela96@gmail.com"
-        );
-    }
-
-    @Given("I enter password Test@1234")
-    public void i_enter_password_test() {
-
-        initialize();
-
-        type(
-                By.xpath("//*[@id=\"login-password\"]"),
-                registeredPassword
-        );
-    }
-
-    @When("I click submit button")
-    public void i_click_submit_button() {
-
-        initialize();
-
-        click(By.xpath(
-                "//*[@id=\"login-submit\"]"));
-    }
-
-    @Then("I should be logged in successfully")
-    public void i_should_be_logged_in_successfully() {
-
-        initialize();
-
-        assertTrue(
-                !driver.getCurrentUrl().contains("login"),
-                "Login may not have completed successfully"
-        );
-    }
-
-    // ==========================================
-    // ADMINISTRATION
-    // ==========================================
-
+    // STEP 4: Admin login
     @Given("an existing admin logs into the application")
-    public void an_existing_admin_logs_into_the_application() {
+    public void adminLogsIn() {
 
-        initialize();
+        initializePages();
 
-        driver.get(baseUrl);
+        Assert.assertNotNull(
+                adminEmail,
+                "ADMIN_EMAIL environment variable is missing."
+        );
 
-        // TODO: Enter actual administrator credentials
-        // and submit the login form.
-        throw new UnsupportedOperationException(
-                "Configure administrator login credentials and locators"
+        Assert.assertNotNull(
+                adminPassword,
+                "ADMIN_PASSWORD environment variable is missing."
+        );
+
+        loginPage.openLogin();
+
+        loginPage.login(
+                adminEmail,
+                adminPassword
+        );
+
+        Assert.assertTrue(
+                adminPage.isDashboardDisplayed(),
+                "Admin dashboard was not displayed."
+        );
+
+        System.out.println(
+                "Administrator login successful."
         );
     }
 
-    @When("the admin navigates to user management")
-    public void the_admin_navigates_to_user_management() {
-        throw new UnsupportedOperationException(
-                "Configure the actual User Management navigation locator"
+    // STEP 5: Open Users
+    @When("the admin opens user management")
+    public void adminOpensUserManagement() {
+
+        adminPage.openUsers();
+
+        System.out.println("Admin opened Users.");
+    }
+
+    // STEP 6: Approve new user
+    @When("the admin approves the new user")
+    public void adminApprovesUser() {
+
+        Assert.assertNotNull(
+                userEmail,
+                "New user email is missing."
+        );
+
+        adminPage.approveUser(userEmail);
+
+        System.out.println(
+                "Approved user: " + userEmail
         );
     }
 
-    @When("the admin searches for the newly registered user")
-    public void the_admin_searches_for_the_newly_registered_user() {
+    // STEP 7: Promote user
+    @When("the admin promotes the new user to Admin")
+    public void adminPromotesUser() {
 
-        initialize();
+        Assert.assertNotNull(
+                userEmail,
+                "New user email is missing."
+        );
 
-        if (registeredEmail == null) {
-            throw new IllegalStateException(
-                    "No registered email is available"
-            );
-        }
+        adminPage.promoteUserToAdmin(userEmail);
 
-        throw new UnsupportedOperationException(
-                "Configure the user search field locator"
+        System.out.println(
+                "Promoted user to Admin: " + userEmail
         );
     }
 
-    @When("the admin approves the newly registered user")
-    public void the_admin_approves_the_newly_registered_user() {
-        throw new UnsupportedOperationException(
-                "Configure the actual approval button locator"
-        );
-    }
-
-    @Then("the user account status should be {string}")
-    public void the_user_account_status_should_be(String status) {
-        throw new UnsupportedOperationException(
-                "Configure the actual account status verification"
-        );
-    }
-
-    @When("the admin updates the newly registered user's role")
-    public void the_admin_updates_the_newly_registered_user_s_role() {
-        throw new UnsupportedOperationException(
-                "Configure the actual role editing controls"
-        );
-    }
-
-    @When("the admin assigns the {string} role")
-    public void the_admin_assigns_the_role(String role) {
-        throw new UnsupportedOperationException(
-                "Configure the actual role dropdown"
-        );
-    }
-
-    @When("the admin saves the user changes")
-    public void the_admin_saves_the_user_changes() {
-        throw new UnsupportedOperationException(
-                "Configure the actual save button"
-        );
-    }
-
-    @Then("the newly registered user should have the {string} role")
-    public void the_newly_registered_user_should_have_the_role(String role) {
-        throw new UnsupportedOperationException(
-                "Configure the actual role verification"
-        );
-    }
-
-    // ==========================================
-    // REGISTERED USER LOGIN
-    // ==========================================
-
+    // STEP 8: Logout admin
     @Given("I have logged out of the admin account")
-    public void i_have_logged_out_of_the_admin_account() {
-        throw new UnsupportedOperationException(
-                "Configure the actual logout button"
+    public void logoutAdmin() {
+
+        adminPage.logout();
+
+        System.out.println(
+                "Administrator logged out."
         );
     }
 
-    @When("I log in using the newly registered user credentials")
-    public void i_log_in_using_the_newly_registered_user_credentials() {
+    // STEP 9: Login as new user
+    @When("I log in with the newly registered user")
+    public void loginNewUser() {
 
-        initialize();
+        Assert.assertNotNull(
+                userEmail,
+                "New user email is missing."
+        );
 
-        if (registeredEmail == null) {
-            throw new IllegalStateException(
-                    "Registered user email is missing"
-            );
-        }
+        Assert.assertNotNull(
+                userPassword,
+                "New user password is missing."
+        );
 
-        throw new UnsupportedOperationException(
-                "Configure the registered user login form"
+        loginPage.openLogin();
+
+        loginPage.login(
+                userEmail,
+                userPassword
+        );
+
+        System.out.println(
+                "New user login: " + userEmail
         );
     }
 
-    @Then("I should be successfully logged in")
-    public void i_should_be_successfully_logged_in() {
-        i_should_be_logged_in_successfully();
-    }
+    // STEP 10: Verify Admin role
+    @Then("I should have the {string} role")
+    public void verifyRole(String expectedRole) {
 
-    @Then("I should see the newly registered user's details")
-    public void i_should_see_the_newly_registered_user_s_details() {
-        throw new UnsupportedOperationException(
-                "Configure the actual user details verification"
+        String actualPageText = adminPage.getPageText();
+
+        Assert.assertTrue(
+                actualPageText.toLowerCase().contains(
+                        expectedRole.toLowerCase()
+                ),
+                "Expected role was not displayed: " + expectedRole
         );
-    }
 
-    @And("I should have the {string} role")
-    public void iShouldHaveTheRole(String role) {
-        throw new UnsupportedOperationException(
-                "Configure the actual logged-in role verification"
-        );
-    }
-
-    @And("I should have access to administrator functionality")
-    public void iShouldHaveAccessToAdministratorFunctionality() {
-        throw new UnsupportedOperationException(
-                "Configure administrator functionality verification"
+        System.out.println(
+                "Verified role: " + expectedRole
         );
     }
 }
