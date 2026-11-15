@@ -19,12 +19,18 @@ jobs:
       - name: Checkout project
         uses: actions/checkout@v4
 
-      - name: Set up Java
+      - name: Set up Java 21
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '17'
+          java-version: '21'
           cache: maven
+
+      - name: Verify Java version
+        run: |
+          java -version
+          javac -version
+          mvn -version
 
       - name: Install Chrome
         uses: browser-actions/setup-chrome@v1
@@ -43,19 +49,4 @@ jobs:
             reports/
             screenshots/
           if-no-files-found: warn
-
-
-          steps:
-            - name: Checkout repository
-              uses: actions/checkout@v4
-
-            - name: Set up JDK 21
-              uses: actions/setup-java@v4
-              with:
-                java-version: '21'
-                distribution: 'temurin'
-                cache: maven
-
-            - name: Build with Maven
-              run: mvn clean test
 
