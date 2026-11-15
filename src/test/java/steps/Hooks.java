@@ -7,8 +7,12 @@ import io.cucumber.java.Scenario;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import utils.DriverFactory;
 import utils.Screenshots;
+
+import java.time.Duration;
 
 public class Hooks {
 
@@ -22,6 +26,18 @@ public class Hooks {
         driver.manage().window().maximize();
 
         driver.get("https://ndosisimplifiedautomation.vercel.app/#overview");
+
+        // Wait for the page to finish loading
+        new WebDriverWait(driver, Duration.ofSeconds(30))
+                .until(webDriver ->
+                        ((JavascriptExecutor) webDriver)
+                                .executeScript("return document.readyState")
+                                .equals("complete")
+                );
+
+        // Print page information in GitHub Actions logs
+        System.out.println("Current URL: " + driver.getCurrentUrl());
+        System.out.println("Page title: " + driver.getTitle());
     }
 
     @After
@@ -30,19 +46,17 @@ public class Hooks {
         if (driver != null) {
 
             try {
-                // Capture screenshot
+
                 byte[] screenshot =
                         ((TakesScreenshot) driver)
                                 .getScreenshotAs(OutputType.BYTES);
 
-                // Attach screenshot to Cucumber HTML report
                 scenario.attach(
                         screenshot,
                         "image/png",
                         scenario.getName()
                 );
 
-                // Save screenshot to screenshots folder
                 Screenshots.captureScreenshot(
                         driver,
                         scenario.getName().replaceAll(
@@ -56,10 +70,13 @@ public class Hooks {
                 );
 
             } catch (Exception e) {
+
                 System.out.println(
                         "Screenshot error: " + e.getMessage()
                 );
+
             } finally {
+
                 driver.quit();
                 driver = null;
             }
