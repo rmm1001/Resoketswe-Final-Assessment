@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="Cucumber" time="8.383" tests="2" skipped="0" failures="1" errors="0" timestamp="2026-11-14T21:08:02.011269200Z">
-<testcase classname="New User Registration" name="Register a new user selecting the &quot;Do Not Use&quot; group - #1.1" time="5.684">
+<testsuite name="Cucumber" time="11.36" tests="2" skipped="0" failures="1" errors="0" timestamp="2026-11-15T11:08:39.838629Z">
+<testcase classname="New User Registration" name="Register a new user selecting the &quot;Do Not Use&quot; group - #1.1" time="8.716">
 <failure/>
 <system-out><![CDATA[
 Given I open the application home page......................................passed
@@ -12,7 +12,7 @@ And I submit the registration form..........................................skip
 Then my registration should be successful...................................skipped
 ]]></system-out>
 </testcase>
-<testcase classname="New User Registration" name="Admin assigns administrator role - #1.1" time="2.137">
+<testcase classname="New User Registration" name="Admin assigns administrator role - #1.1" time="2.203">
 <system-out><![CDATA[
 Given an existing admin logs into the application...........................passed
 When the admin navigates to user management.................................passed

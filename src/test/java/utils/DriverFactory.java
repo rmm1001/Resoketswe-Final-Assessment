@@ -1,25 +1,23 @@
+
 package utils;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 public class DriverFactory {
 
-    public static WebDriver driver;
-
     public static WebDriver getDriver() {
 
-        if (driver == null) {
-            driver = new ChromeDriver();
-        }
+        ChromeOptions options = new ChromeOptions();
 
-        return driver;
-    }
+        options.addArguments("--headless=new");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--disable-gpu");
+        options.addArguments("--window-size=1920,1080");
 
-    public static void quitDriver() {
-        if (driver != null) {
-            driver.quit();
-            driver = null;
-        }
+        return new ChromeDriver(options);
     }
 }
+

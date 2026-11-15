@@ -34,6 +34,8 @@ jobs:
 
       - name: Install Chrome
         uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
 
       - name: Run Cucumber tests
         run: mvn clean test

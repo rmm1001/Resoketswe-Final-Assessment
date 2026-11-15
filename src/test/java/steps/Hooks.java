@@ -1,33 +1,31 @@
+
 package steps;
 
 import io.cucumber.java.After;
-import io.cucumber.java.AfterAll;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import utils.DriverFactory;
-import utils.Reports;
 import utils.Screenshots;
-
 
 public class Hooks {
 
+    private WebDriver driver;
+
     @Before
     public void setUp() {
-        WebDriver driver = DriverFactory.getDriver();
+
+        driver = DriverFactory.getDriver();
 
         driver.manage().window().maximize();
 
         driver.get("https://ndosisimplifiedautomation.vercel.app/#overview");
-
     }
 
     @After
     public void takeScreenshotAfterScenario(Scenario scenario) {
-
-        WebDriver driver = DriverFactory.getDriver();
 
         if (driver != null) {
 
@@ -61,8 +59,10 @@ public class Hooks {
                 System.out.println(
                         "Screenshot error: " + e.getMessage()
                 );
+            } finally {
+                driver.quit();
+                driver = null;
             }
         }
-
     }
 }

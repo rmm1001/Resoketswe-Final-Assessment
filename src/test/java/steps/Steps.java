@@ -6,24 +6,29 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import javax.naming.CompoundName;
 import java.time.Duration;
 
-import static utils.DriverFactory.driver;
+import static   utils.DriverFactory.getDriver;
+import static utils.DriverFactory.getDriver;
 
 public class Steps {
 
     @Given("I open the application home page")
     public void openHomePage() {
+        WebDriver driver = getDriver();
         driver.get("https://ndosisimplifiedautomation.vercel.app/#overview");
     }
 
     @When("I click on Login")
     public void clickLogin() {
 
+        WebDriver driver = getDriver();
         WebDriverWait wait = new WebDriverWait(
                 driver, Duration.ofSeconds(15)
         );
@@ -40,6 +45,7 @@ public class Steps {
     @When("I click on Sign up here")
     public void clickSignUp() {
 
+        WebDriver driver = null;
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 
         WebElement signUp = wait.until(
