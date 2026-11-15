@@ -88,7 +88,7 @@ public class Steps {
         initialize();
 
         click(By.xpath(
-                "//*[normalize-space()='Login']"
+                "//*[@id=\"app-root\"]/nav/div[1]/div[3]/button/span[2]"
         ));
     }
 
@@ -102,9 +102,7 @@ public class Steps {
         initialize();
 
         click(By.xpath(
-                "//*[contains(translate(normalize-space(.), " +
-                        "'ABCDEFGHIJKLMNOPQRSTUVWXYZ'," +
-                        "'abcdefghijklmnopqrstuvwxyz'), 'sign up')]"
+                "//*[@id=\"signup-toggle\"]"
         ));
     }
 
@@ -161,8 +159,7 @@ public class Steps {
         // Replace this locator if the group field
         // uses a custom dropdown rather than a select.
         WebElement dropdown = find(
-                By.xpath("//select[contains(@name,'group') or " +
-                        "contains(@id,'group')]")
+                By.xpath("//*[@id=\"register-group\"]")
         );
 
         new Select(dropdown).selectByVisibleText(groupName);
@@ -174,9 +171,7 @@ public class Steps {
         initialize();
 
         click(By.xpath(
-                "//button[normalize-space()='Register' or " +
-                        "normalize-space()='Sign Up' or " +
-                        "normalize-space()='Sign up']"
+                "//*[@id=\"register-submit\"]"
         ));
     }
 
@@ -188,9 +183,7 @@ public class Steps {
         // Replace with the application's actual success message.
         WebElement confirmation = find(
                 By.xpath(
-                        "//*[contains(translate(normalize-space(.), " +
-                                "'ABCDEFGHIJKLMNOPQRSTUVWXYZ'," +
-                                "'abcdefghijklmnopqrstuvwxyz'), 'success')]"
+                        "//*[@id=\"register-group\"]"
                 )
         );
 
@@ -220,9 +213,7 @@ public class Steps {
         initialize();
 
         type(
-                By.xpath("//input[@type='email' or " +
-                        "contains(@name,'email') or " +
-                        "contains(@id,'email')]"),
+                By.xpath("//*[@id=\"login-email\"]"),
                 "mashabela96@gmail.com"
         );
     }
@@ -233,7 +224,7 @@ public class Steps {
         initialize();
 
         type(
-                By.xpath("//input[@type='password']"),
+                By.xpath("//*[@id=\"login-password\"]"),
                 registeredPassword
         );
     }
@@ -244,10 +235,7 @@ public class Steps {
         initialize();
 
         click(By.xpath(
-                "//button[@type='submit' or " +
-                        "normalize-space()='Login' or " +
-                        "normalize-space()='Sign in']"
-        ));
+                "//*[@id=\"login-submit\"]"));
     }
 
     @Then("I should be logged in successfully")
