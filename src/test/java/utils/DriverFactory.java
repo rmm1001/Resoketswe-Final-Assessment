@@ -7,17 +7,30 @@ import org.openqa.selenium.chrome.ChromeOptions;
 
 public class DriverFactory {
 
+    private static WebDriver driver;
+
     public static WebDriver getDriver() {
 
-        ChromeOptions options = new ChromeOptions();
+        if (driver == null) {
 
-        options.addArguments("--headless=new");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--disable-gpu");
-        options.addArguments("--window-size=1920,1080");
+            ChromeOptions options = new ChromeOptions();
 
-        return new ChromeDriver(options);
+            // Keep the browser visible while debugging.
+            options.addArguments("--window-size=1920,1080");
+            options.addArguments("--disable-dev-shm-usage");
+            options.addArguments("--disable-gpu");
+
+            driver = new ChromeDriver(options);
+        }
+
+        return driver;
+    }
+
+    public static void quitDriver() {
+
+        if (driver != null) {
+            driver.quit();
+            driver = null;
+        }
     }
 }
-
